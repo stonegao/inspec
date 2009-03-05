@@ -1,3 +1,4 @@
+with(Inspec.dsl.BDD){
 describe("spec for Foo", function(){
   
   it("should do foo", function(){
@@ -22,4 +23,4 @@ describe("spec for Foo", function(){
     })
   })
   
-})
+})}

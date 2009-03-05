@@ -1,16 +1,19 @@
-// global functions
-function describe(description, implementation){
-  Inspec.ExampleGroup.createExampleGroup(description, implementation);
-};
+Inspec.dsl = {};
+
+Inspec.dsl.BDD = {
+  describe : function(description, implementation){
+    Inspec.ExampleGroup.createExampleGroup(description, implementation);
+  },
   
-function shareExamplesFor(description, implementation){
-  Inspec.ExampleGroup.createExampleGroup(description, implementation, {shared : true});
+  shareExamplesFor : function(description, implementation){
+    Inspec.ExampleGroup.createExampleGroup(description, implementation, {shared : true});
+  },
+
+  it : function(description, implementation){
+    Inspec.Example.createExample(description, implementation);
+  }
 };
 
-function it(description, implementation){
-  Inspec.Example.createExample(description, implementation);
-};
+Inspec.dsl.BDD.context = Inspec.dsl.BDD.describe;
 
-context = describe;
-
-sharedExamplesFor = shareExamplesFor;
+Inspec.dsl.BDD.sharedExamplesFor = Inspec.dsl.BDD.shareExamplesFor;

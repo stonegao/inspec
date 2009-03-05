@@ -10,17 +10,11 @@ Inspec.ExampleGroupHierarchy.prototype = {
   },
   
   currentNode : function(){
-    console.log("=========start==========");
     var node = this.root;
     for(var i=0; i < this.stack.length; i++){
       var description = this.stack[i].getDescription();
-      console.log(description);
-      console.log(node);
       node = node.findChildNodeBy(description);
-    }
-    console.log(node);
-    console.log("=========end==========");
-    
+    }    
     return node;
   },
   
@@ -39,7 +33,7 @@ Inspec.ExampleGroupHierarchy.prototype = {
   popStack : function(){
     return this.getStack().pop();
   }
-}
+};
 
 Inspec.ExampleGroupHierarchy.Node = function(exampleGroup, parent){
   this.exampleGroup = exampleGroup;
@@ -75,4 +69,4 @@ Inspec.ExampleGroupHierarchy.Node.prototype = {
     return node;
   }
 
-}
+};

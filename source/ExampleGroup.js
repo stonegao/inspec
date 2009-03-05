@@ -31,7 +31,7 @@ Inspec.ExampleGroup.prototype = {
   popFromStack : function(){
     Inspec.ExampleGroup.popStack(this);
   }
-}
+};
 
 // root example groups
 Inspec.ExampleGroup.standard = new Inspec.ExampleGroupHierarchy();
