@@ -45,3 +45,7 @@ Inspec.Example.prototype = {
   afterEachExample  : function(){
   }
 };
+
+Inspec.Example.addParentTo : function(options){
+  options.parentExampleGroup = 
+}
