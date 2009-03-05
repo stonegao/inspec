@@ -28,6 +28,10 @@ Inspec.Example.prototype = {
     return success;
   },
   
+  getDescription : function(){
+    return this.description;
+  },
+  
   // returns a subject that can do "should bla"  
   valueOf : function(subject){
 
@@ -35,8 +39,7 @@ Inspec.Example.prototype = {
   
   pending : function(message){
     
-  }
-
+  },
 
 // private  
   beforeEachExample : function(){
@@ -46,6 +49,11 @@ Inspec.Example.prototype = {
   }
 };
 
-Inspec.Example.addParentTo : function(options){
-  options.parentExampleGroup = 
-}
+Inspec.Example.createExample = function(description, implementation){
+  var currentExampleGroup = Inspec.ExampleGroup.lastAddedExamplGroup;
+  if(!currentExampleGroup){
+    throw new Error("Cannot Create examples outside of ExampleGroup!");
+  }
+  var example = new Inspec.Example(description, implementation);
+  currentExampleGroup.addExample(example);
+};

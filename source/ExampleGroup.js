@@ -1,6 +1,8 @@
-Inspec.ExampleGroup = function(description, implementation){
+Inspec.ExampleGroup = function(description, implementation, options){
   this.description = description;
   this.implementation = implementation;
+  this.examples = {};
+  this.options = options || {};
 };
 
 Inspec.ExampleGroup.prototype = {
@@ -9,28 +11,64 @@ Inspec.ExampleGroup.prototype = {
   },
   
   init : function(){
+    this.pushToStack();
     this.implementation();
-  }  
+    this.popFromStack();
+  },
+  
+  isShared : function(){
+    return (this.options.shared ? true : false);
+  },
+  
+  addExample : function(example){
+    this.examples[example.getDescription()] = example;
+  },
+  
+  pushToStack : function(){
+    Inspec.ExampleGroup.pushStack(this);
+  },
+  
+  popFromStack : function(){
+    Inspec.ExampleGroup.popStack(this);
+  }
 }
 
 // root example groups
-Inspec.ExampleGroup.roots = {};
-Inspec.ExampleGroup.shared = {};
-Inspec.ExampleGroup.stack = [];
+Inspec.ExampleGroup.standard = new Inspec.ExampleGroupHierarchy();
+Inspec.ExampleGroup.shared = new Inspec.ExampleGroupHierarchy();
 
-Inspec.ExampleGroup.createExampleGroup(description, implementation){
-  var exampleGroup = new Inspec.ExampleGroup(description, implementation);
-  this.addExampleGroupToHierarchy(exampleGroup);
-
-  this.stack.push(exampleGroup);
+Inspec.ExampleGroup.createExampleGroup = function(description, implementation, options){
+  options = Inspec.ExampleGroup.ensureShared(options);  
+  var exampleGroup = new Inspec.ExampleGroup(description, implementation, options);
+  this.addExampleGroupToHierarchy(exampleGroup);  
   exampleGroup.init();
-  this.stack.pop(exampleGroup);
-},
+};
+
+Inspec.ExampleGroup.selectHierarchy = function(exampleGroup){
+  return (exampleGroup.isShared() ? this.shared : this.standard);
+};
 
 Inspec.ExampleGroup.addExampleGroupToHierarchy = function(exampleGroup){
-  var node = this.stack;
-  for(var i=0; i< this.stack.length; i++){
-    node = node[this.stack[i].getDescription()];
+  this.selectHierarchy(exampleGroup).add(exampleGroup);
+  this.lastAddedExamplGroup = exampleGroup;
+};
+
+Inspec.ExampleGroup.ensureShared = function(options){
+  if(this.isLastAddedExampleGroupShared()){
+    options = options || {};
+    options.shared = true;
   }
-  node[exampleGroup.getDescription()] = exampleGroup;
-}
+  return options;
+};
+
+Inspec.ExampleGroup.pushStack = function(exampleGroup){
+  this.selectHierarchy(exampleGroup).pushStack(exampleGroup);
+};
+
+Inspec.ExampleGroup.popStack = function(exampleGroup){
+  return this.selectHierarchy(exampleGroup).popStack();
+};
+
+Inspec.ExampleGroup.isLastAddedExampleGroupShared = function(){
+  return (this.lastAddedExamplGroup && this.lastAddedExamplGroup.isShared());
+};
