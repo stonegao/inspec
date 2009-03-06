@@ -20,11 +20,6 @@ describe("Foo") do
     true.should == true
   end
   
-  it "should do foo2" do
-    puts "should do foo2"
-    true.should == true
-  end
-  
   share_examples_for("Shared") do
     before :each do
       puts "shared before each"
@@ -82,6 +77,4 @@ describe("Foo") do
     
     it_should_behave_like "Shared"
   end
-  
-  
 end

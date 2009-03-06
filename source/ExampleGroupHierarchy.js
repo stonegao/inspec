@@ -65,8 +65,14 @@ Inspec.ExampleGroupHierarchy.Node.prototype = {
     this.children.set(node.getDescription(), node);
   },
   
+  isConcrete : function(){
+    return this.getExampleGroup() instanceof ExampleGroup;
+  },
+  
   getDescription : function(){
-    return this.getExampleGroup().getDescription();
+    if(this.isConcrete())
+      return this.getExampleGroup().getDescription();
+    return this.getExampleGroup();
   },
   
   getExampleGroup : function(){

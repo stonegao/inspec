@@ -16,7 +16,12 @@ Inspec.ExampleGroup.prototype = {
   },
   
   addSharedExampleGroups : function(){
-    this.sharedExampleGroups = this.sharedExampleGroups.concat.apply(this.sharedExampleGroups, arguments);
+    // add the shared example group string to this.examples
+    for(var i=0; i< arguments.length; i++){
+      this.examples.add(arguments[i], arguments[i]);
+    }
+    //adding it as a child of current example group
+    Inspec.ExampleGroup.addSharedExampleGroupToStandard(arguments);
   },
   
   run : function(){
@@ -145,6 +150,13 @@ Inspec.ExampleGroup.selectHierarchy = function(exampleGroup){
 Inspec.ExampleGroup.addExampleGroupToHierarchy = function(exampleGroup){
   this.selectHierarchy(exampleGroup).add(exampleGroup);
   this.lastAddedExamplGroup = exampleGroup;
+};
+
+Inspec.ExampleGroup.addSharedExampleGroupToStandard = function(shared){
+  var runner = Inspec.Runner.getInstance();
+  for(var i=0; i < shared.length; i++){
+    runner.standardExampleGroups().add(shared[i]);
+  }
 };
 
 Inspec.ExampleGroup.ensureShared = function(options){
