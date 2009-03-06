@@ -11,7 +11,27 @@ Inspec.dsl.BDD = {
 
   it : function(description, implementation){
     Inspec.Example.createExample(description, implementation);
-  }
+  },
+  
+  beforeEach : function(implementation){
+    Inspec.ExampleGroup.addBeforeEach(implementation);
+  },
+  
+  afterEach : function(implementation){
+    Inspec.ExampleGroup.addAfterEach(implementation);
+  },
+  
+  beforeAll : function(implementation){
+    Inspec.ExampleGroup.addBeforeAll(implementation);
+  },
+  
+  afterAll : function(implementation){
+    Inspec.ExampleGroup.addAfterAll(implementation);
+  },
+  
+  itShouldBehaveLike : function(){
+    Inspec.ExampleGroup.addSharedExampleGroup.apply(Inspec.ExampleGroup, arguments);
+  }  
 };
 
 Inspec.dsl.BDD.context = Inspec.dsl.BDD.describe;

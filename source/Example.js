@@ -1,4 +1,4 @@
-Inspec.Example = function(description, options, implementation){
+Inspec.Example = function(description, implementation, options){
   this.description = description;
   this.implementation = implementation;
   this.options = options;
@@ -6,9 +6,7 @@ Inspec.Example = function(description, options, implementation){
 
 Inspec.Example.prototype = {
   run  :  function(runOptions, variables){
-    runOptions.reporter.exampleStarted("");
     var executionError = null;
-    
     try{
       this.beforeEachExample();
       this.implementation.apply(this);
@@ -20,12 +18,29 @@ Inspec.Example.prototype = {
     }catch(e){
       executionError = executionError || e;
     }
-    
-    runOptions.reporter.exampleFinished(this.description, executionError);
-    
     var success = executionError ? true : false;
-    
     return success;
+    
+    // runOptions.reporter.exampleStarted("");
+    // var executionError = null;
+    // 
+    // try{
+    //   this.beforeEachExample();
+    //   this.implementation.apply(this);
+    // }catch(e){
+    //   executionError = executionError || e;
+    // }
+    // try{
+    //   this.afterEachExample();
+    // }catch(e){
+    //   executionError = executionError || e;
+    // }
+    // 
+    // runOptions.reporter.exampleFinished(this.description, executionError);
+    // 
+    // var success = executionError ? true : false;
+    // 
+    // return success;
   },
   
   getDescription : function(){
@@ -40,12 +55,25 @@ Inspec.Example.prototype = {
   pending : function(message){
     
   },
-
+  
+  setBeforeEach : function(implementation) {
+    this.beforeEach = implementation;
+  },
+  
+  setAfterEach : function(implementation) {
+    this.afterEach = implementation;
+  },
 // private  
   beforeEachExample : function(){
+    for(var i=0; i < this.beforeEach.length; i++){
+      this.beforeEach[i]();
+    }
   },
   
   afterEachExample  : function(){
+    for(var i=0; i < this.afterEach.length; i++){
+      this.afterEach[i]();
+    }
   }
 };
 
@@ -55,5 +83,7 @@ Inspec.Example.createExample = function(description, implementation){
     throw new Error("Cannot Create examples outside of ExampleGroup!");
   }
   var example = new Inspec.Example(description, implementation);
+  example.setBeforeEach(currentExampleGroup.getBeforeEach());
+  example.setAfterEach(currentExampleGroup.getAfterEach());
   currentExampleGroup.addExample(example);
 };

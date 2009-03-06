@@ -18,6 +18,12 @@ Inspec.ExampleGroupHierarchy.prototype = {
     return node;
   },
   
+  each : function(fn, scope){
+    this.root.children.each(function(description, node){
+      node.each(fn, scope);
+    });
+  },
+  
   currentExampleGroup : function(){
     return this.currentNode().getExampleGroup();
   },
@@ -39,13 +45,24 @@ Inspec.ExampleGroupHierarchy.Node = function(exampleGroup, parent){
   this.exampleGroup = exampleGroup;
   this.parent = parent;
   this.children = new Inspec.OrderedHash();
-  if(parent)
+  if(parent){
     this.parent.addChildNode(this);
+    if(parent.exampleGroup)
+    this.exampleGroup.addParentBeforeAfter(parent.exampleGroup);
+  }
 };
 
 Inspec.ExampleGroupHierarchy.Node.prototype = {
+  // depth first iteration
+  each : function(fn, scope){
+    fn.call(scope, this.getDescription(), this);
+    if(this.children){
+      this.children.each(fn, scope);
+    }    
+  },
+  
   addChildNode : function(node){
-    this.children.add(node.getDescription(), node);
+    this.children.set(node.getDescription(), node);
   },
   
   getDescription : function(){

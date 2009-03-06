@@ -5,7 +5,13 @@ Inspec.OrderedHash = function(){
 }
 
 Inspec.OrderedHash.prototype = {
-  add : function(key, value){
+  each : function(fn, scope){
+    for(var i=0; i< this.size(); i++){
+      fn.apply(scope || this, [this.keys[i], this.values[i]]);
+    }    
+  },
+  
+  set : function(key, value){
     this.keys.push(key);
     this.values.push(value);
     this.mapping[key] = this.values.length-1;
@@ -15,7 +21,7 @@ Inspec.OrderedHash.prototype = {
     return this.getAt(this.mapping[key]); 
   },
   
-  length : function(){
+  size : function(){
     return this.keys.length;
   },
   
