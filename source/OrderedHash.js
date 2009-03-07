@@ -11,10 +11,46 @@ Inspec.OrderedHash.prototype = {
     }    
   },
   
+  select : function(fn, scope){
+    for(var i=0; i< this.size(); i++){
+      var rv = fn.apply(scope || this, [this.keys[i], this.values[i]]);
+      if(rv){
+        return rv;
+      }
+    }
+    return null; 
+  },
+  
+  filter : function(fn,scope){
+    var rv = new Inspec.OrderedHash();
+    for(var i=0; i< this.size(); i++){
+      var v = fn.apply(scope || this, [this.keys[i], this.values[i]]);
+      if(v){
+        rv.set(v[0], v[1]);
+      }
+    }
+    return rv; 
+  },
+  
+  map : function(fn, scope){
+    var rv = new Inspec.OrderedHash();
+    for(var i=0; i< this.size(); i++){
+      var v = fn.apply(scope || this, [this.keys[i], this.values[i]]);
+      rv.set(v[0], v[1]);
+    }
+    return rv; 
+  },
+  
   set : function(key, value){
-    this.keys.push(key);
-    this.values.push(value);
-    this.mapping[key] = this.values.length-1;
+    var oldValue = this.get(key)
+    if(!oldValue){
+      this.keys.push(key);
+      this.values.push(value);
+      this.mapping[key] = this.values.length-1;
+    } else {
+      var index = this.indexOf(oldValue);
+      this.values[index] = value;
+    }
   },
   
   get : function(key){
@@ -43,7 +79,7 @@ Inspec.OrderedHash.prototype = {
   },
   
   indexOf : function(value){
-    for(var i = 0; i < this.values; i++){
+    for(var i = 0; i < this.values.length; i++){
       if(this.values[i] == value){
         return i;
       }
@@ -55,7 +91,7 @@ Inspec.OrderedHash.prototype = {
     var key = this.keys[index];
     var value = this.values[index];
     
-    delete this.mapping.key;
+    delete this.mapping[key];
     this.keys.splice(index, 1);
     this.values.splice(index, 1);
     

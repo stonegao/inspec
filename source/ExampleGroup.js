@@ -8,6 +8,7 @@ Inspec.ExampleGroup = function(description, implementation, options){
   this.afterEach = [];
   this.beforeAll = [];
   this.afterAll = [];
+  this.node = null;
 };
 
 Inspec.ExampleGroup.prototype = {
@@ -15,12 +16,24 @@ Inspec.ExampleGroup.prototype = {
     return this.description;
   },
   
+  getNode : function(){
+    return this.node;
+  },
+  
+  getParent : function(){
+    return this.getNode().getExampleGroup();
+  },
+  
+  getChildren : function(){
+    var scope = {children : []};
+    this.getNode().children.each(function(description, node){
+      this.children.push(node.getExampleGroup());
+    }, scope);
+    return scope.children;
+  },
+    
   addSharedExampleGroups : function(){
-    // add the shared example group string to this.examples
-    for(var i=0; i< arguments.length; i++){
-      this.examples.add(arguments[i], arguments[i]);
-    }
-    //adding it as a child of current example group
+    //adding the shared example as a child of current example group
     Inspec.ExampleGroup.addSharedExampleGroupToStandard(arguments);
   },
   
@@ -136,7 +149,7 @@ Inspec.ExampleGroup.addAfterAll = function(implementation){
 };
 
 Inspec.ExampleGroup.createExampleGroup = function(description, implementation, options){
-  options = Inspec.ExampleGroup.ensureShared(options);  
+  options = Inspec.ExampleGroup.ensureShared(options);
   var exampleGroup = new Inspec.ExampleGroup(description, implementation, options);
   this.addExampleGroupToHierarchy(exampleGroup);  
   exampleGroup.init();
@@ -148,20 +161,21 @@ Inspec.ExampleGroup.selectHierarchy = function(exampleGroup){
 };
 
 Inspec.ExampleGroup.addExampleGroupToHierarchy = function(exampleGroup){
-  this.selectHierarchy(exampleGroup).add(exampleGroup);
+  var hierarchy = this.selectHierarchy(exampleGroup);
+  hierarchy.add(exampleGroup);
   this.lastAddedExamplGroup = exampleGroup;
 };
 
 Inspec.ExampleGroup.addSharedExampleGroupToStandard = function(shared){
   var runner = Inspec.Runner.getInstance();
   for(var i=0; i < shared.length; i++){
-    runner.standardExampleGroups().add(shared[i]);
+    runner.getStandardExampleGroups().add(shared[i]);
   }
 };
 
 Inspec.ExampleGroup.ensureShared = function(options){
+  options = options || {};
   if(this.isLastAddedExampleGroupShared()){
-    options = options || {};
     options.shared = true;
   }
   return options;
@@ -180,5 +194,22 @@ Inspec.ExampleGroup.popStack = function(exampleGroup){
 };
 
 Inspec.ExampleGroup.isLastAddedExampleGroupShared = function(){
-  return (this.lastAddedExamplGroup && this.lastAddedExamplGroup.isShared());
+  var rv = this.lastAddedExamplGroup && this.lastAddedExamplGroup.isShared();
+  rv = rv && this.isLastAddedExampleGroupInStack();
+  return rv;
 };
+
+Inspec.ExampleGroup.isLastAddedExampleGroupInStack = function(){
+  var runner = Inspec.Runner.getInstance();
+  var sharedStack = runner.sharedExampleGroups.stack;
+  var lastExampleGroupInStack = sharedStack[sharedStack.length - 1];
+  return lastExampleGroupInStack === this.lastAddedExamplGroup;
+};
+
+
+
+
+
+
+
+
