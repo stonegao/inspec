@@ -1,0 +1,2 @@
+Fix the extra 'shared inside shared' example group inside "Foo", it was 
+not suppose to happen!
