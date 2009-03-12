@@ -60,10 +60,6 @@ Inspec.ExampleGroupHierarchy.Node = function(exampleGroup, parent){
   }
   if(parent){
     this.parent.addChildNode(this);
-    if(parent.exampleGroup && this.isConcrete()){
-      this.exampleGroup.addParentBeforeAfter(parent.exampleGroup);
-      
-    }
   }
 };
 
@@ -92,7 +88,7 @@ Inspec.ExampleGroupHierarchy.Node.prototype = {
     // setup the example group from shared
     this.setupStack();
     Inspec.ExampleGroup.lastAddedExamplGroup = this.getExampleGroup();
-    Inspec.ExampleGroup.createExampleGroup(description, sharedExampleGroup.implementation);
+    Inspec.ExampleGroup.createExampleGroup(description, sharedExampleGroup.implementation, {concrete : true});
     this.teardownStack();
     
     // remove from the newly created example from the last position

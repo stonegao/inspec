@@ -1,20 +1,21 @@
-Inspec.Example = function(description, implementation, options){
+Inspec.Example = function(exampleGroup, description, implementation, options){
+  this.exampleGroup = exampleGroup;
   this.description = description;
   this.implementation = implementation;
   this.options = options;
 };
 
 Inspec.Example.prototype = {
-  run  :  function(runOptions, variables){
+  run  :  function(scope, runOptions){
     var executionError = null;
     try{
-      this.beforeEachExample();
-      this.implementation.apply(this);
+      this.beforeEachExample(scope);
+      this.implementation.call(scope);
     }catch(e){
       executionError = executionError || e;
     }
     try{
-      this.afterEachExample();
+      this.afterEachExample(scope);
     }catch(e){
       executionError = executionError || e;
     }
@@ -56,24 +57,13 @@ Inspec.Example.prototype = {
     
   },
   
-  setBeforeEach : function(implementation) {
-    this.beforeEach = implementation;
-  },
-  
-  setAfterEach : function(implementation) {
-    this.afterEach = implementation;
-  },
 // private  
-  beforeEachExample : function(){
-    for(var i=0; i < this.beforeEach.length; i++){
-      this.beforeEach[i]();
-    }
+  beforeEachExample : function(scope){
+    this.exampleGroup.beforeEachExample(scope);
   },
   
-  afterEachExample  : function(){
-    for(var i=0; i < this.afterEach.length; i++){
-      this.afterEach[i]();
-    }
+  afterEachExample  : function(scope){
+    this.exampleGroup.afterEachExample(scope);
   }
 };
 
@@ -82,8 +72,6 @@ Inspec.Example.createExample = function(description, implementation){
   if(!currentExampleGroup){
     throw new Error("Cannot Create examples outside of ExampleGroup!");
   }
-  var example = new Inspec.Example(description, implementation);
-  example.setBeforeEach(currentExampleGroup.getBeforeEach());
-  example.setAfterEach(currentExampleGroup.getAfterEach());
+  var example = new Inspec.Example(currentExampleGroup, description, implementation);
   currentExampleGroup.addExample(example);
 };

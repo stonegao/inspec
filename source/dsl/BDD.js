@@ -2,11 +2,11 @@ Inspec.dsl = {};
 
 Inspec.dsl.BDD = {
   describe : function(description, implementation){
-    Inspec.ExampleGroup.createExampleGroup(description, implementation);
+    Inspec.ExampleGroup.createExampleGroup(description, implementation, {concrete : true});
   },
   
   shareExamplesFor : function(description, implementation){
-    Inspec.ExampleGroup.createExampleGroup(description, implementation, {shared : true});
+    Inspec.ExampleGroup.createExampleGroup(description, implementation, {shared : true, concrete : true});
   },
 
   it : function(description, implementation){
@@ -14,23 +14,23 @@ Inspec.dsl.BDD = {
   },
   
   beforeEach : function(implementation){
-    Inspec.ExampleGroup.addBeforeEach(implementation);
+    Inspec.ExampleGroup.setBeforeEach(implementation);
   },
   
   afterEach : function(implementation){
-    Inspec.ExampleGroup.addAfterEach(implementation);
+    Inspec.ExampleGroup.setAfterEach(implementation);
   },
   
   beforeAll : function(implementation){
-    Inspec.ExampleGroup.addBeforeAll(implementation);
+    Inspec.ExampleGroup.setBeforeAll(implementation);
   },
   
   afterAll : function(implementation){
-    Inspec.ExampleGroup.addAfterAll(implementation);
+    Inspec.ExampleGroup.setAfterAll(implementation);
   },
   
   itShouldBehaveLike : function(){
-    Inspec.ExampleGroup.addSharedExampleGroup.apply(Inspec.ExampleGroup, arguments);
+    Inspec.ExampleGroup.addSharedExampleGroups(arguments);
   }  
 };
 
