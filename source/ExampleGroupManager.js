@@ -1,6 +1,4 @@
-// should not be singleton class
-// used for easier test later
-// makes more sense to rename it to something makes more sense
+// creates an exmaple group manager
 Inspec.ExampleGroupManager = function(){
   this.shared = {}
   this.root = new Inspec.TreeNode('root');
@@ -8,7 +6,11 @@ Inspec.ExampleGroupManager = function(){
 };
   
 Inspec.ExampleGroupManager.prototype = {
-  // public
+  // Add an example group to shared for later use if the example group is
+  // shared. Add an example group to standard if it is not shared. If the
+  // added example group is concrete, we initialize it. If the added example
+  // group is not concrete, it will later be solidified using a shared example
+  // group.
   add : function(exampleGroup){
     if(exampleGroup.isShared()){
       this.shared[exampleGroup.getDescription()] = exampleGroup;
@@ -19,7 +21,7 @@ Inspec.ExampleGroupManager.prototype = {
     }
   },
   
-  // protected
+  // solidifies a non-concrete example group using a shared example group.
   solidifySharedExampleGroup : function(exampleGroup){
     // do nothing if it is concrete
     if(exampleGroup.isConcrete())
@@ -30,7 +32,10 @@ Inspec.ExampleGroupManager.prototype = {
     this.initExampleGroup(exampleGroup);
   },
   
-  // protected
+  // initializes an example group. Do nothing if the example group is not
+  // concrete. Because it doesn't have an implementation. It sets the current
+  // exaple group first, then runs the implementation of the example group,
+  // finally, it sets the current example group to the parent example group.
   initExampleGroup : function(exampleGroup){
     if(!exampleGroup.isConcrete())
       return;
@@ -40,13 +45,14 @@ Inspec.ExampleGroupManager.prototype = {
     this.current = exampleGroup.node.getParent();
   },
   
-  // public
+  // runs all example groups in order. Trigger this to run all example groups.
+  // maybe should be moved to runner.
   run : function(){
     this.prepare();
     this.execute();
   },
   
-  // protected
+  // iterate through all example groups, and solidify exmaple groups
   prepare : function() {
     this.root.each(function(node){
       if(node.hasContent() && (!node.getContent().isConcrete()))
@@ -54,7 +60,7 @@ Inspec.ExampleGroupManager.prototype = {
     }, this);   
   },
   
-  // protected
+  // executes all example groups in order
   execute : function() {
     this.root.each(function(node){
       if(node.hasContent())
@@ -62,7 +68,7 @@ Inspec.ExampleGroupManager.prototype = {
     }, this);    
   },
   
-  // public
+  // returns the current example group
   currentExampleGroup : function(){
     return this.current.getContent();
   }

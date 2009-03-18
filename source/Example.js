@@ -6,6 +6,9 @@ Inspec.Example = function(exampleGroup, description, implementation, options){
 };
 
 Inspec.Example.prototype = {
+  // executes user specified implementation of this example
+  // Returns success or failure
+  // exceptions are caught and recorded
   run  :  function(scope, runOptions){
     var executionError = null;
     try{
@@ -44,29 +47,26 @@ Inspec.Example.prototype = {
     // return success;
   },
   
+  // returns the description of this example
   getDescription : function(){
     return this.description;
   },
-  
-  // returns a subject that can do "should bla"  
-  valueOf : function(subject){
-
-  },
-  
-  pending : function(message){
     
-  },
-  
-// private  
+  // private function
+  // executes the before each clause of the parent example groups in order,
+  // immediate parent example group is executed first
   beforeEachExample : function(scope){
     this.exampleGroup.beforeEachExample(scope);
   },
   
+  // executes the after each clause of parent example groups in reverse order
+  // immediate parent example group is executed last
   afterEachExample  : function(scope){
     this.exampleGroup.afterEachExample(scope);
   }
 };
 
+// creates a new example and adds it to the current example group
 Inspec.Example.createExample = function(description, implementation){
   var currentExampleGroup = Inspec.ExampleGroup.current();
   if(!currentExampleGroup){
