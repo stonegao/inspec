@@ -2,7 +2,7 @@
 Inspec.ExampleGroupManager = function(){
   this.shared = {}
   this.root = new Inspec.TreeNode('root');
-  this.current = this.root;    
+  this.current = this.root;
 };
   
 Inspec.ExampleGroupManager.prototype = {
@@ -17,6 +17,7 @@ Inspec.ExampleGroupManager.prototype = {
     } else {
       var newNode = new Inspec.TreeNode(exampleGroup.getDescription(), exampleGroup);
       this.current.add(newNode);
+      exampleGroup.node = newNode;
       this.initExampleGroup(exampleGroup);
     }
   },
@@ -44,28 +45,13 @@ Inspec.ExampleGroupManager.prototype = {
     exampleGroup.implementation();
     this.current = exampleGroup.node.getParent();
   },
-  
-  // runs all example groups in order. Trigger this to run all example groups.
-  // maybe should be moved to runner.
-  run : function(){
-    this.prepare();
-    this.execute();
-  },
-  
+    
   // iterate through all example groups, and solidify exmaple groups
   prepare : function() {
     this.root.each(function(node){
       if(node.hasContent() && (!node.getContent().isConcrete()))
         this.solidifySharedExampleGroup(node.getContent());
     }, this);   
-  },
-  
-  // executes all example groups in order
-  execute : function() {
-    this.root.each(function(node){
-      if(node.hasContent())
-        node.getContent().run();
-    }, this);    
   },
   
   // returns the current example group

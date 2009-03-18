@@ -9,8 +9,6 @@ Inspec.TreeNode = function(name, content){
   this._content = content;
   this._children = [];
   this._childrenHash = {};
-  if(this._content)
-    this._content.node = this;
 };
 
 Inspec.TreeNode.max = function(array){

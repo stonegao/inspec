@@ -104,68 +104,6 @@ Inspec.ExampleGroup.prototype = {
     return (this.isConcrete() && this.examples.length > 0);
   },
   
-  // executes current example group
-  run : function(){
-    if(this.hasExamples())
-    {
-      var scope = {};
-      this.beforeAllExample(scope);
-      this.runExamples(scope);
-      this.afterAllExample(scope);
-    }
-  },
-  
-  // runs before all clauses of all parent and current example groups.
-  // immediate parents are run last
-  beforeAllExample : function(scope){
-    var parent = this.getParent();
-    if(parent){
-      parent.beforeAllExample(scope);
-    }
-    if(typeof this.beforeAll == "function")
-      this.beforeAll.call(scope);
-  },
-  
-  // runs after all caluases of all parent and current example groups.
-  // current is run first, and then immediate parent is run
-  afterAllExample : function(scope){
-    if(typeof this.afterAll == "function")
-      this.afterAll.call(scope);
-    var parent = this.getParent();
-    if(parent){
-      parent.afterAllExample(scope);
-    }
-  },
-
-  // runs before each clauses of all parent and current example groups.
-  // immediate parents are run last  
-  beforeEachExample : function(scope){
-    var parent = this.getParent();
-    if(parent){
-      parent.beforeEachExample(scope);
-    }
-    if(typeof this.beforeEach == "function")
-      this.beforeEach.call(scope);
-  },
-  
-  // runs after each caluases of all parent and current example groups.
-  // current is run first, and then immediate parent is run
-  afterEachExample : function(scope){
-    if(typeof this.afterEach == "function")
-      this.afterEach.call(scope);
-    var parent = this.getParent();
-    if(parent){
-      parent.afterEachExample(scope);
-    }
-  },
-  
-  // runs all examples in this example group
-  runExamples : function(scope){
-    for(var i=0; i< this.examples.length; i++){
-      this.examples[i].run(scope);
-    }
-  },
-  
   // add an example to this example group
   addExample : function(example){
     this.examples.push(example);

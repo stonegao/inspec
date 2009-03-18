@@ -70,7 +70,8 @@ shareExamplesFor("shared inside shared", function(){
 
 }
 
-Inspec.ExampleGroup.manager.run();
+Inspec.ExampleGroup.manager.prepare();
+Inspec.runner.execute();
 
 expected = [ "foo before all", 
   "foo before each", 
