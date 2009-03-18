@@ -1,8 +1,10 @@
-Inspec.ExampleGroup = function(description, implementation, options){
+Inspec.ExampleGroup = function(description, implementation, shared){
   this.description = description;
   this.implementation = implementation;
-  this.examples = new Inspec.OrderedHash();
-  this.options = options || {};
+  this.examples = [];
+  this.shared = false;
+  if(shared)
+    this.shared = true;
   this.node = null;
 };
 
@@ -11,28 +13,72 @@ Inspec.ExampleGroup.prototype = {
     return this.description;
   },
   
+  getImplementation : function(){
+    return this.implementation;
+  },
+  
   getNode : function(){
     return this.node;
   },
   
   getParent : function(){
-    var parent = this.getNode().parent;
+    var parent = this.getNode().getParent();
     if(parent){
-      return parent.getExampleGroup();
+      return parent.getContent();
     }
     return null;
   },
   
   getChildren : function(){
     var scope = {children : []};
-    this.getNode().children.each(function(description, node){
-      this.children.push(node.getExampleGroup());
+    this.getNode().eachChild(function(node){
+      this.children.push(node.getContent());
     }, scope);
     return scope.children;
   },
   
+  getBeforeEach : function(){
+    return this.beforeEach;
+  },
+  
+  getAfterEach : function(){
+    return this.afterEach;
+  },
+  
+  getBeforeAll : function(){
+    return this.beforeAll;
+  },
+  
+  getAfterAll : function(){
+    return this.afterAll;
+  },
+  
+  setBeforeEach : function(fn){
+    this.beforeEach = fn;
+  },
+  
+  setAfterEach : function(fn){
+    this.afterEach = fn;
+  },
+  
+  setBeforeAll : function(fn){
+    this.beforeAll = fn;
+  },
+  
+  setAfterAll : function(fn){
+    this.afterAll = fn;
+  },
+  
+  isShared : function(){
+    return this.shared;
+  },
+  
+  isConcrete : function(){
+    return (this.implementation && typeof this.implementation == 'function');
+  },  
+  
   hasExamples : function(){
-    return (this.examples && this.examples.size() > 0);
+    return (this.isConcrete() && this.examples.length > 0);
   },
     
   run : function(){
@@ -82,151 +128,39 @@ Inspec.ExampleGroup.prototype = {
   },
   
   runExamples : function(scope){
-    this.examples.each(function(description, example){
-      example.run(scope);
-    }, this);
-  },
-  
-  init : function(){
-    if(!this.isConcrete())
-      return;
-      
-    this.pushToStack();
-    this.implementation();
-    this.popFromStack();
-  },
-  
-  isShared : function(){
-    return (this.options.shared ? true : false);
-  },
-  
-  isConcrete : function(){
-    return (this.options.concrete ? true : false);
+    for(var i=0; i< this.examples.length; i++){
+      this.examples[i].run(scope);
+    }
   },
   
   addExample : function(example){
-    this.examples.set(example.getDescription(), example);
-  },
-  
-  pushToStack : function(){
-    Inspec.ExampleGroup.pushStack(this);
-  },
-  
-  popFromStack : function(){
-    Inspec.ExampleGroup.popStack(this);
-  },
-  
-  setBeforeEach : function(fn){
-    this.beforeEach = fn;
-  },
-  
-  setAfterEach : function(fn){
-    this.afterEach = fn;
-  },
-  
-  setBeforeAll : function(fn){
-    this.beforeAll = fn;
-  },
-  
-  setAfterAll : function(fn){
-    this.afterAll = fn;
-  },
-  
-  getBeforeEach : function(){
-    return this.beforeEach;
-  },
-  
-  getAfterEach : function(){
-    return this.afterEach;
-  },
-  
-  getBeforeAll : function(){
-    return this.beforeAll;
-  },
-  
-  getAfterAll : function(){
-    return this.afterAll;
+    this.examples.push(example);
   }
-  
+};
+
+Inspec.ExampleGroup.manager = new Inspec.ExampleGroupManager();
+
+Inspec.ExampleGroup.current = function(){
+  return this.manager.currentExampleGroup();
 };
 
 Inspec.ExampleGroup.setBeforeEach = function(implementation){
-  this.lastAddedExamplGroup.setBeforeEach(implementation);
+  this.current().setBeforeEach(implementation);
 };
 
 Inspec.ExampleGroup.setAfterEach = function(implementation){
-  this.lastAddedExamplGroup.setAfterEach(implementation);
+  this.current().setAfterEach(implementation);
 };
 
 Inspec.ExampleGroup.setBeforeAll = function(implementation){
-  this.lastAddedExamplGroup.setBeforeAll(implementation);
+  this.current().setBeforeAll(implementation);
 };
 
 Inspec.ExampleGroup.setAfterAll = function(implementation){
-  this.lastAddedExamplGroup.setAfterAll(implementation);  
+  this.current().setAfterAll(implementation);  
 };
 
-Inspec.ExampleGroup.createExampleGroup = function(description, implementation, options){
-  options = Inspec.ExampleGroup.ensureShared(options);
-  var exampleGroup = new Inspec.ExampleGroup(description, implementation, options);
-  this.addExampleGroupToHierarchy(exampleGroup);  
-  exampleGroup.init();
+Inspec.ExampleGroup.createExampleGroup = function(description, implementation, shared){
+  var exampleGroup = new Inspec.ExampleGroup(description, implementation, shared);
+  this.manager.add(exampleGroup);
 };
-
-Inspec.ExampleGroup.addSharedExampleGroups = function(shared){
-  for(var i=0; i < shared.length; i++) {
-    this.createExampleGroup(shared[i], null, {concrete : false});
-  }
-};
-
-Inspec.ExampleGroup.selectHierarchy = function(exampleGroup){
-  var runner = Inspec.Runner.getInstance();
-  return (exampleGroup.isShared() ? runner.getSharedExampleGroups() : runner.getStandardExampleGroups());
-};
-
-Inspec.ExampleGroup.addExampleGroupToHierarchy = function(exampleGroup){
-  var hierarchy = this.selectHierarchy(exampleGroup);
-  hierarchy.add(exampleGroup);
-  if(exampleGroup.isConcrete())
-    this.lastAddedExamplGroup = exampleGroup;
-};
-
-
-Inspec.ExampleGroup.ensureShared = function(options){
-  options = options || {};
-  if(this.isLastAddedExampleGroupShared()){
-    options.shared = true;
-  }
-  return options;
-};
-
-
-
-Inspec.ExampleGroup.pushStack = function(exampleGroup){
-  this.selectHierarchy(exampleGroup).pushStack(exampleGroup);
-};
-
-Inspec.ExampleGroup.popStack = function(exampleGroup){
-  return this.selectHierarchy(exampleGroup).popStack();
-};
-
-Inspec.ExampleGroup.isLastAddedExampleGroupShared = function(){
-  var rv = this.lastAddedExamplGroup && this.lastAddedExamplGroup.isShared();
-  rv = rv && this.isLastAddedExampleGroupInStack();
-  return rv;
-};
-
-Inspec.ExampleGroup.isLastAddedExampleGroupInStack = function(){
-  var runner = Inspec.Runner.getInstance();
-  var sharedStack = runner.sharedExampleGroups.stack;
-  var lastExampleGroupInStack = sharedStack[sharedStack.length - 1];
-  return lastExampleGroupInStack === this.lastAddedExamplGroup;
-};
-
-
-
-
-
-
-
-

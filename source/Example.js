@@ -68,7 +68,7 @@ Inspec.Example.prototype = {
 };
 
 Inspec.Example.createExample = function(description, implementation){
-  var currentExampleGroup = Inspec.ExampleGroup.lastAddedExamplGroup;
+  var currentExampleGroup = Inspec.ExampleGroup.current();
   if(!currentExampleGroup){
     throw new Error("Cannot Create examples outside of ExampleGroup!");
   }
