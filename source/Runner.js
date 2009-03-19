@@ -1,5 +1,6 @@
-Inspec.Runner = function(root){
+Inspec.Runner = function(root, messenger){
   this.root = root;
+  this.messenger = messenger;
 };
 
 Inspec.Runner.prototype = {
@@ -10,21 +11,25 @@ Inspec.Runner.prototype = {
   // runs the entire set
   // executes all example groups in order
   execute : function() {
+    this.messenger.send("beginTest");
     this.root.each(function(node){
       var exampleGroup = node.getContent();
       if(exampleGroup)
         this.executeExampleGroup(exampleGroup);
     }, this);
+    this.messenger.send("endTest");
   },
   
   // executes the specified example group
   executeExampleGroup : function(exampleGroup){
     if(exampleGroup.hasExamples())
     {
+      this.messenger.send("beginExampleGroup", {exampleGroup : exampleGroup});
       var scope = {};
       this.executeBeforeAll(exampleGroup);
       this.executeExamples(exampleGroup);
       this.executeAfterAll(exampleGroup);
+      this.messenger.send("endExampleGroup", {exampleGroup : exampleGroup});
     }
   },
   
@@ -85,7 +90,7 @@ Inspec.Runner.prototype = {
   executeExample : function(example){
     var executionError = null;
     var exampleGroup = example.exampleGroup;
-    
+    this.messenger.send("beginExample", {example : example});
     try{
       this.executeBeforeEach(exampleGroup);
       this.executeExampleImplementation(example);
@@ -99,6 +104,8 @@ Inspec.Runner.prototype = {
     }
     
     var success = executionError ? true : false;
+    
+    this.messenger.send("endExample", {example : example});
     return success;    
   },
   
@@ -108,4 +115,4 @@ Inspec.Runner.prototype = {
   }
 };
 
-Inspec.runner = new Inspec.Runner(Inspec.ExampleGroup.manager.root);
+Inspec.runner = new Inspec.Runner(Inspec.ExampleGroup.manager.root, Inspec.messenger);

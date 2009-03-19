@@ -196,9 +196,6 @@ expected = [ "foo before all",
 ];
 var success = (strings.length == expected.length);
 
-for(var i=0; i< strings.length; i++){
-  console.log(strings[i]);
-}
 
 if(!success)
   throw "Length dosn't match; expected: " +expected.length + ", got: " + strings.length;
