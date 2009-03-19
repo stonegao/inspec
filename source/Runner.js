@@ -103,10 +103,9 @@ Inspec.Runner.prototype = {
       executionError = executionError || e;
     }
     
-    var success = executionError ? true : false;
+    var success = executionError ? false : true;
     
-    this.messenger.send("endExample", {example : example});
-    return success;    
+    this.messenger.send("endExample", {example : example, success : success, error : executionError});   
   },
   
   // run the implementation of the example group

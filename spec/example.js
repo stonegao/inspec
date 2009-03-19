@@ -7,7 +7,7 @@ describe("spec for Foo", function(){
   afterEach(function(){strings.push("foo after each")})  
   afterAll(function(){strings.push("foo after all")})
   
-  it("should do foo", function(){strings.push("should do foo")})
+  it("should do foo", function(){strings.push("should do foo"); expect(true).not().toBeTrue();})
   it("should do foo2", function(){strings.push("should do foo2")})
 
   describe("spec for Bar", function(){

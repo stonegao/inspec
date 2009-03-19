@@ -12,6 +12,10 @@ Inspec.dsl.BDD = {
   itShouldBehaveLike : function(description){
     Inspec.ExampleGroup.createExampleGroup(description, null);
   },
+  
+  expect : function(subject){
+    return new Inspec.Expectation(subject);
+  },
 
   it : function(description, implementation){
     Inspec.Example.createExample(description, implementation);

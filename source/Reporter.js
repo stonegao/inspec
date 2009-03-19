@@ -23,6 +23,18 @@ Inspec.Reporter.prototype = {
   },
   
   onEndExample : function(message){
+    var example = message.example;
+    var success = message.success;
+    var error = message.error;
+    if(success)
+      console.log("success");
+    else{
+      if(error instanceof Inspec.ExpectationFailure){
+        console.log("Failure : " + error);
+      } else if(error instanceof Error){
+        console.log("Error : " + error);
+      }
+    }
   },
   
   subscribeMessages : function(){
