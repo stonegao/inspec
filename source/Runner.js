@@ -122,6 +122,9 @@ Inspec.Runner = Inspec.Class.extend({
   
   // run the implementation of the example group
   executeExampleImplementation : function(example){
+    if(!example.implementation){
+      throw new Inspec.ExamplePending();
+    }
     example.implementation.call(this.currentScope());
   }
 });

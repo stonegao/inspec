@@ -30,23 +30,56 @@ Inspec.HtmlReporter = Inspec.Reporter.extend({
     var result = this.document.createElement('div');
     var title = this.document.createElement('div');
     title.setAttribute("class", "title");
-    title.innerHTML = description;
-    result.appendChild(title);
+    
+    var text = this.document.createElement('div');
+    text.setAttribute("class", "description");
+    text.innerHTML = description;
+    
+    var clear = this.document.createElement('br');
+    clear.setAttribute("clear", "both");
+
+
+    var status = this.document.createElement('div');
+    status.setAttribute("class", "status");
 
     if(success){
-      result.setAttribute("class", "success");
+      result.setAttribute("class", "example success");
+      title.appendChild(status);
+      title.appendChild(text);
+      title.appendChild(clear);
+      result.appendChild(title);
     }
     else{
       if(error instanceof Inspec.ExpectationFailure){
-        result.setAttribute("class", "failure");
-      } else if(error instanceof Error){
-        result.setAttribute("class", "error");
+        result.setAttribute("class", "example failure");
+        title.appendChild(status);
+        title.appendChild(text);
+        title.appendChild(clear);
+        result.appendChild(title);
+        var explanation = this.document.createElement('div');
+        explanation.setAttribute("class", "explanation");
+        explanation.innerHTML = error.toString();
+        result.appendChild(explanation);
+      } else if (error instanceof Inspec.ExamplePending){
+        result.setAttribute("class", "example pending");
+        title.appendChild(status);
+        title.appendChild(text);
+        title.appendChild(clear);
+        result.appendChild(title);
+      } 
+      else if(error instanceof Error){
+        result.setAttribute("class", "example error");
+        title.appendChild(status);
+        title.appendChild(text);
+        title.appendChild(clear);
+        result.appendChild(title);
+        var explanation = this.document.createElement('div');
+        explanation.setAttribute("class", "explanation");
+        explanation.innerHTML = error.toString();
+        result.appendChild(explanation);
       }
-      var explanation = this.document.createElement('div');
-      explanation.setAttribute("class", "explanation");
-      explanation.innerHTML = error.toString();
-      result.appendChild(explanation);
     }
+    
     this.viewport.appendChild(result);
   },
   

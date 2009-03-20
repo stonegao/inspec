@@ -1,6 +1,7 @@
 Inspec.Exception = Inspec.Class.extend({
   init : function(message){
-    this.message = message.toString();
+    if(message)
+      this.message = message.toString();
   },
   
   toString : function(){
@@ -9,5 +10,6 @@ Inspec.Exception = Inspec.Class.extend({
 });
 
 Inspec.ExpectationFailure = Inspec.Exception.extend({});
+Inspec.ExamplePending = Inspec.Exception.extend({});
 Inspec.NotImplemented = Inspec.Exception.extend({});
 Inspec.UnkownEnvironment = Inspec.Exception.extend({});

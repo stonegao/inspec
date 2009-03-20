@@ -1,0 +1,55 @@
+#inspec .example {
+  width  : 80%;
+  padding : 5px;
+  margin  : 5px;
+  border : solid 1px #ccccff;
+  font-size : 12px;
+  background : #eeeeee;
+}
+
+#inspec .success {
+  color : green;
+}
+
+#inspec .pending{
+  color : #C8B560;
+}
+
+#inspec .failure,  #inspec .error{
+  color : red
+}
+
+#inspec .example .title .status {
+  float : left;
+  width : 16px;
+  height : 16px;
+}
+
+#inspec .success .title .status {
+  background : url('success.png');
+}
+
+#inspec .failure .title .status {
+  background : url('failure.png');
+}
+
+#inspec .error .title .status {
+  background : url('error.png');
+}
+
+#inspec .pending .title .status {
+  background : url('pending.png');
+}
+
+#inspec .example .title {
+  font-weight : bold;
+}
+
+#inspec .example .title .description {
+  float : left;
+  padding-left : 10px;
+}
+
+#inspec .example .explanation {
+  padding-left : 20px
+}

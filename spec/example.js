@@ -7,7 +7,13 @@ describe("Inspec", function(){
   it("should fail", function(){
     expect(true).not().toBeTrue();
   })
+
+  it("should error", function(){
+    it.should.error.out;
+  })
   
+  it("should be pending")
+    
   describe("with a nested example group", function(){
     
     it("should work as a nested example group", function(){
