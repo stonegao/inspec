@@ -1,7 +1,7 @@
 // creates an exmaple group manager
 Inspec.ExampleGroupManager = function(){
   this.shared = {}
-  this.root = new Inspec.TreeNode('root');
+  this.root = new Inspec.util.TreeNode('root');
   this.current = this.root;
 };
   
@@ -15,7 +15,7 @@ Inspec.ExampleGroupManager.prototype = {
     if(exampleGroup.isShared()){
       this.shared[exampleGroup.getDescription()] = exampleGroup;
     } else {
-      var newNode = new Inspec.TreeNode(exampleGroup.getDescription(), exampleGroup);
+      var newNode = new Inspec.util.TreeNode(exampleGroup.getDescription(), exampleGroup);
       this.current.add(newNode);
       exampleGroup.node = newNode;
       this.initExampleGroup(exampleGroup);

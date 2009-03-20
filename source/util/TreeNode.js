@@ -1,6 +1,6 @@
 // Constructor
 // Creates a new node
-Inspec.TreeNode = function(name, content){
+Inspec.util.TreeNode = function(name, content){
   if(!name)
     throw "Node name HAS to be provided";
     
@@ -11,15 +11,15 @@ Inspec.TreeNode = function(name, content){
   this._childrenHash = {};
 };
 
-Inspec.TreeNode.max = function(array){
+Inspec.util.TreeNode.max = function(array){
   return Math.max.apply(Math, array);
 };
 
-Inspec.TreeNode.min = function(array){
+Inspec.util.TreeNode.min = function(array){
   return Math.min.apply(Math, array);
 };
 
-Inspec.TreeNode.prototype ={
+Inspec.util.TreeNode.prototype ={
   // Adds the specified child node to the receiver node.  The child node's
   // parent is set to be the receiver.  The child is added as the last child in
   // the current list of children for the receiver node.
@@ -307,7 +307,7 @@ Inspec.TreeNode.prototype ={
       this.eachChildren(function(child){
         ary.push(child.depth());
       }, this);
-      deapth += Inspec.ds.TreeNode.max(ary);
+      deapth += Inspec.util.TreeNode.max(ary);
     }
     return depath;
   },

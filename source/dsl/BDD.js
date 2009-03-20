@@ -1,5 +1,3 @@
-Inspec.dsl = {};
-
 Inspec.dsl.BDD = {
   describe : function(description, implementation){
     Inspec.ExampleGroup.createExampleGroup(description, implementation);

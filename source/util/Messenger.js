@@ -1,8 +1,8 @@
-Inspec.Messenger = function(){
+Inspec.util.Messenger = function(){
   this.events = {};
 };
 
-Inspec.Messenger.prototype = {
+Inspec.util.Messenger.prototype = {
   send : function(subject, message){
     var handlers = this.events[subject];
     if(!handlers) return;
@@ -28,4 +28,4 @@ Inspec.Messenger.prototype = {
   }
 };
 
-Inspec.messenger = new Inspec.Messenger();
+Inspec.messenger = new Inspec.util.Messenger();
