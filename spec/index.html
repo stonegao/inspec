@@ -17,9 +17,14 @@
   <script type="text/javascript" src="../source/Expectation.js"></script>
   <script type="text/javascript" src="../source/matchers/Matcher.js"></script>
   <script type="text/javascript" src="../source/matchers/IdentityMatcher.js"></script>
+  <script type="text/javascript" src="../source/environments/Environment.js"></script>
   <script type="text/javascript" src="../source/temp.js"></script>
   
-  <script type="text/javascript" src="example.js"></script>
+  <script type="text/javascript">
+    var specFiles = ['example.js'];
+    Inspec.run({specFiles : specFiles});
+  
+  </script>
   <title>Inspec - spec runner</title>
 </head>
 <body>

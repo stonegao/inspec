@@ -112,7 +112,7 @@ Inspec.ExampleGroup = Inspec.Class.extend({
 
 // returns current example group
 Inspec.ExampleGroup.current = function(){
-  return this.manager.currentExampleGroup();
+  return Inspec.Environment.getInstance().getExampleGroupManager().currentExampleGroup();
 };
 
 // sets before each for current example group
@@ -138,5 +138,5 @@ Inspec.ExampleGroup.setAfterAll = function(implementation){
 // creates an exmaple gorup and add it into examplegroup manager
 Inspec.ExampleGroup.createExampleGroup = function(description, implementation, shared){
   var exampleGroup = new Inspec.ExampleGroup(description, implementation, shared);
-  this.manager.add(exampleGroup);
+  Inspec.Environment.getInstance().getExampleGroupManager().add(exampleGroup);
 };

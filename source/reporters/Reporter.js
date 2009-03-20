@@ -15,20 +15,26 @@ Inspec.Reporter = Inspec.Class.extend({
   },
   
   onStartTest : function(message){
+    throw new Inspec.NotImplemented();
   },
   
   onEndTest : function(message){
+    throw new Inspec.NotImplemented();
   },
   
   onStartExampleGroup : function(message){
+    throw new Inspec.NotImplemented();
   },
   
   onEndExampleGroup : function(message){
+    throw new Inspec.NotImplemented();
   },
   
   onStartExample : function(message){
+    throw new Inspec.NotImplemented();
   },
   
   onEndExample : function(message){
+    throw new Inspec.NotImplemented();
   }
 });

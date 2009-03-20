@@ -24,12 +24,23 @@ Inspec.Runner = Inspec.Class.extend({
   executeExampleGroup : function(exampleGroup){
     if(exampleGroup.hasExamples())
     {
+      var executionError = null;
       this.messenger.send("beginExampleGroup", {exampleGroup : exampleGroup});
       var scope = {};
-      this.executeBeforeAll(exampleGroup);
-      this.executeExamples(exampleGroup);
-      this.executeAfterAll(exampleGroup);
-      this.messenger.send("endExampleGroup", {exampleGroup : exampleGroup});
+      try{
+        this.executeBeforeAll(exampleGroup);
+        this.executeExamples(exampleGroup);
+      }catch(e){
+        executionError = executionError || e;
+      }
+      
+      try{
+        this.executeAfterAll(exampleGroup);
+      }catch(e){
+        executionError = executionError || e;
+      }
+      
+      this.messenger.send("endExampleGroup", {exampleGroup : exampleGroup, error : executionError});
     }
   },
   

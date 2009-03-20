@@ -8,9 +8,11 @@ Inspec.matchers.Matcher = Inspec.Class.extend({
   },
 
   matches : function(){
+    throw new Inspec.NotImplemented();
   },  
 
   explain : function(){
+    throw new Inspec.NotImplemented();
   },
   
   toString : function(){
