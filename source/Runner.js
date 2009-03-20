@@ -1,9 +1,9 @@
-Inspec.Runner = function(root, messenger){
-  this.root = root;
-  this.messenger = messenger;
-};
-
-Inspec.Runner.prototype = {
+Inspec.Runner = Inspec.Class.extend({
+  init : function(root, messenger){
+    this.root = root;
+    this.messenger = messenger;
+  },
+  
   currentScope : function(){
     return {};
   },
@@ -112,6 +112,6 @@ Inspec.Runner.prototype = {
   executeExampleImplementation : function(example){
     example.implementation.call(this.currentScope());
   }
-};
+});
 
-Inspec.runner = new Inspec.Runner(Inspec.ExampleGroup.manager.root, Inspec.messenger);
+

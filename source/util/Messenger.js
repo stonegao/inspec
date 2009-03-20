@@ -28,4 +28,4 @@ Inspec.util.Messenger.prototype = {
   }
 };
 
-Inspec.messenger = new Inspec.util.Messenger();
+

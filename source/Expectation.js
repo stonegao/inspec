@@ -1,23 +1,9 @@
-Inspec.ExpectationFailure = function(message){
-  this.message = message.toString();
-};
-
-Inspec.ExpectationFailure.prototype = {
-  toString : function(){
-    return this.message;
-  }
-};
-
-Inspec.Expectation = function(subject){
-  this.subject = subject;
-  this.negative = false;
-};
-
-// expect(a).not().toBe(b)
-// expect(a).not().toFail()
-// expect(a).toBeEmpty()
-
-Inspec.Expectation.prototype = {
+Inspec.Expectation = Inspec.Class.extend({
+  init : function(subject){
+    this.subject = subject;
+    this.negative = false;
+  },
+  
   judge : function(matcher){
     var result = matcher.matches();
     if(!result){
@@ -25,6 +11,9 @@ Inspec.Expectation.prototype = {
     }  
   },
   
+  // expect(a).not().toBe(b)
+  // expect(a).not().toFail()
+  // expect(a).toBeEmpty()
   not  : function(){
     this.negative = !this.negative;
     return this;
@@ -95,5 +84,4 @@ Inspec.Expectation.prototype = {
   // apply to string, array  
   toHaveAtMost : function(occurance, property){
   }
-  
-};
+});

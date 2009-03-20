@@ -1,16 +1,17 @@
-Inspec.Example = function(exampleGroup, description, implementation, options){
-  this.exampleGroup = exampleGroup;
-  this.description = description;
-  this.implementation = implementation;
-  this.options = options;
-};
-
-Inspec.Example.prototype = {
+Inspec.Example = Inspec.Class.extend({
+  // constructor
+  init : function(exampleGroup, description, implementation, options){
+    this.exampleGroup = exampleGroup;
+    this.description = description;
+    this.implementation = implementation;
+    this.options = options;
+  },
+  
   // returns the description of this example
   getDescription : function(){
     return this.description;
-  }    
-};
+  } 
+});
 
 // creates a new example and adds it to the current example group
 Inspec.Example.createExample = function(description, implementation){

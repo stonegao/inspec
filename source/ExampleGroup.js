@@ -1,19 +1,19 @@
-// constructor
-// An example group is concrete if implementation is given. Example groups that
-// are not concrete will later be solidified with the matching shared example 
-// groups. An example group is shared if the shared flag is set. Shared example
-// groups cannot be run directly, and will later become solidified. 
-Inspec.ExampleGroup = function(description, implementation, shared){
-  this.description = description;
-  this.implementation = implementation;
-  this.examples = [];
-  this.shared = false;
-  if(shared)
-    this.shared = true;
-  this.node = null;
-};
-
-Inspec.ExampleGroup.prototype = {
+Inspec.ExampleGroup = Inspec.Class.extend({
+  // constructor
+  // An example group is concrete if implementation is given. Example groups that
+  // are not concrete will later be solidified with the matching shared example 
+  // groups. An example group is shared if the shared flag is set. Shared example
+  // groups cannot be run directly, and will later become solidified.
+  init : function(description, implementation, shared){
+    this.description = description;
+    this.implementation = implementation;
+    this.examples = [];
+    this.shared = false;
+    if(shared)
+      this.shared = true;
+    this.node = null;
+  },
+  
   // returns the description of the example group
   getDescription : function(){
     return this.description;
@@ -108,10 +108,7 @@ Inspec.ExampleGroup.prototype = {
   addExample : function(example){
     this.examples.push(example);
   }
-};
-
-// sets the global example group manager
-Inspec.ExampleGroup.manager = new Inspec.ExampleGroupManager();
+});
 
 // returns current example group
 Inspec.ExampleGroup.current = function(){

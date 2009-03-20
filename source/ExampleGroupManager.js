@@ -1,11 +1,11 @@
-// creates an exmaple group manager
-Inspec.ExampleGroupManager = function(){
-  this.shared = {}
-  this.root = new Inspec.util.TreeNode('root');
-  this.current = this.root;
-};
+Inspec.ExampleGroupManager = Inspec.Class.extend({
+  // creates an exmaple group manager
+  init : function(){
+    this.shared = {}
+    this.root = new Inspec.util.TreeNode('root');
+    this.current = this.root;
+  },
   
-Inspec.ExampleGroupManager.prototype = {
   // Add an example group to shared for later use if the example group is
   // shared. Add an example group to standard if it is not shared. If the
   // added example group is concrete, we initialize it. If the added example
@@ -58,4 +58,4 @@ Inspec.ExampleGroupManager.prototype = {
   currentExampleGroup : function(){
     return this.current.getContent();
   }
-};
+});
