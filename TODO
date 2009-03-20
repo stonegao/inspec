@@ -1,2 +1,32 @@
-Fix the extra 'shared inside shared' example group inside "Foo", it was 
-not suppose to happen!
+* Implement a pretty HtmlReporter
+* Implement a ConsoleReporter
+* Add helpers to determine environment
+* Implement JScriptEnvironment
+* Implement RihnoEnvironment
+* Change loading of files in BrowserEnvironement to use synchronous ajax call
+* Add Parsers to parse loaded specs before eval (support for better syntax)
+* Implement sandboxed scopes in test execution
+* Implement matchers (stolen from jspec):
+
+ - equal            ===
+  - be_a, be_an      have constructor of x
+  - be_at_least      >=
+  - be_at_most       <=
+  - be_null          == null
+  - be_empty         length of 0
+  - be_true          == true
+  - be_false         == false
+  - be_type          be type of x
+  - be_greater_than  >
+  - be_less_than     <
+  - be_within        checks if x is within the range passed
+  - have_length      length of x
+  - include          include substring, array element, or hash key
+  - match            string should match regexp x
+  - respond_to       property x should be a function
+  - eql, be          matches simple literals (strings, numbers) with == .
+                     However composites like arrays or 'hashes' are recursively matched,
+                     meaning that [1, 2, [3]].should_eql([1, 2, [3]]) will be true.
+                     
+* Better error messages
+
