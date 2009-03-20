@@ -1,9 +1,7 @@
 * Implement a pretty HtmlReporter
 * Implement a ConsoleReporter
-* Add helpers to determine environment
 * Implement JScriptEnvironment
 * Implement RihnoEnvironment
-* Change loading of files in BrowserEnvironement to use synchronous ajax call
 * Add Parsers to parse loaded specs before eval (support for better syntax)
 * Implement sandboxed scopes in test execution
 * Implement matchers (stolen from jspec):

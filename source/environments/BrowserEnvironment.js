@@ -1,18 +1,20 @@
-// 1. determine enviroment ()
-
-// Inspec.specFiles = [files];
-
-// Inspec.start();
-// 2. create new enviroment
-
-// when initializing:
-// 1. create facility
-// 2. start runner
-
-// Initialization Routine:
-// Inspec.specFiles = [files]
-// Inspec.run();
-// -- Inspec.Enviroment.getInstance()
-// -- load files
-// -- create facility
-// -- start specing
+Inspec.BrowserEnvironment = Inspec.Environment.extend({
+  reporterClass : function(){
+    return Inspec.HtmlReporter;
+  },
+	
+  loadFile : function(location){
+    if (window.XMLHttpRequest)
+      var ajax=new XMLHttpRequest();
+    else
+      var ajax=new ActiveXObject("Microsoft.XMLHTTP");
+    
+    if(ajax){
+      ajax.open("GET", location, false);
+      ajax.send(null);
+      return ajax.responseText;
+    } else {
+      return null;
+    }
+  }
+});

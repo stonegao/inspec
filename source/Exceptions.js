@@ -9,5 +9,5 @@ Inspec.Exception = Inspec.Class.extend({
 });
 
 Inspec.ExpectationFailure = Inspec.Exception.extend({});
-
 Inspec.NotImplemented = Inspec.Exception.extend({});
+Inspec.UnkownEnvironment = Inspec.Exception.extend({});

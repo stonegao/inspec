@@ -1,6 +1,4 @@
 strings=[];
-with(Inspec.dsl.BDD){
-
 describe("spec for Foo", function(){
   beforeEach(function(){strings.push("foo before each")})  
   beforeAll(function(){strings.push("foo before all")})
@@ -67,4 +65,4 @@ shareExamplesFor("shared inside shared", function(){
 
   it("should do shared inside shared", function(){strings.push("should do shared inside shared")})
 })
-}
+

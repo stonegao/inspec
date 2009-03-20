@@ -18,11 +18,13 @@
   <script type="text/javascript" src="../source/matchers/Matcher.js"></script>
   <script type="text/javascript" src="../source/matchers/IdentityMatcher.js"></script>
   <script type="text/javascript" src="../source/environments/Environment.js"></script>
+  <script type="text/javascript" src="../source/environments/BrowserEnvironment.js"></script>
   <script type="text/javascript" src="../source/temp.js"></script>
   
   <script type="text/javascript">
-    var specFiles = ['example.js'];
-    Inspec.run({specFiles : specFiles});
+    Inspec
+      .load('example.js')
+      .run();
   
   </script>
   <title>Inspec - spec runner</title>
