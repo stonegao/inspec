@@ -1,30 +1,30 @@
-* Implement a pretty HtmlReporter
+* Implement matchers (stolen from jspec):
+
+ - equal            === (IdentityMatcher)
+  - be_a, be_an      have constructor of x (InstanceMatcher)
+  - be_at_least      >= (ComparisonMatcher)
+  - be_at_most       <= (ComparisonMatcher)
+  - be_null          == null (IdentityMatcher)
+  - be_empty         length of 0 (IdentityMatcher)
+  - be_true          == true (IdentityMatcher)
+  - be_false         == false (IdentityMatcher)
+  - be_type          be type of x (TypeMatcher)
+  - be_greater_than  > (ComparisonMatcher)
+  - be_less_than     < (ComparisonMatcher)
+  - be_within        checks if x is within the range passed (RangeMatcher)
+  - have_length      length of x (EqualityMatcher)
+  - include          include substring, array element, or hash key (InclusionMatcher)
+  - match            string should match regexp x (RegexMather)
+  - respond_to       property x should be a function (TypeMathcer)
+  - eql, be          matches simple literals (strings, numbers) with == . (EqualityMatcher)
+                     However composites like arrays or 'hashes' are recursively matched,
+                     meaning that [1, 2, [3]].should_eql([1, 2, [3]]) will be true.
+
+* Implement sandboxed scopes in test execution
+* Better error messages
+* Add Parsers to parse loaded specs before eval (support for better syntax)
+* Implement a better HtmlReporter
 * Implement a ConsoleReporter
 * Implement JScriptEnvironment
 * Implement RihnoEnvironment
-* Add Parsers to parse loaded specs before eval (support for better syntax)
-* Implement sandboxed scopes in test execution
-* Implement matchers (stolen from jspec):
-
- - equal            ===
-  - be_a, be_an      have constructor of x
-  - be_at_least      >=
-  - be_at_most       <=
-  - be_null          == null
-  - be_empty         length of 0
-  - be_true          == true
-  - be_false         == false
-  - be_type          be type of x
-  - be_greater_than  >
-  - be_less_than     <
-  - be_within        checks if x is within the range passed
-  - have_length      length of x
-  - include          include substring, array element, or hash key
-  - match            string should match regexp x
-  - respond_to       property x should be a function
-  - eql, be          matches simple literals (strings, numbers) with == .
-                     However composites like arrays or 'hashes' are recursively matched,
-                     meaning that [1, 2, [3]].should_eql([1, 2, [3]]) will be true.
-                     
-* Better error messages
 * Add default options
