@@ -19,34 +19,41 @@ Inspec.Expectation = Inspec.Class.extend({
     return this;
   },
   
-  // apply to object
-  toBe : function(expected){
-    var matcher = new Inspec.matchers.EqualityMatcher(expected, this.subject, this.negative);
+  // apply to object  
+  toEqual : function(expected){
+    var matcher = new Inspec.matchers.IdentityMatcher(expected, this.subject, {negative : this.negative});
+    this.judge(matcher);    
+  },
+  
+  toBeA : function(expected){
+    var matcher = new Inspec.matchers.InstanceMatcher(expected, this.subject, {negative : this.negative});
+    this.judge(matcher);  
+  },
+  
+  toBeAtLeast : function(expected){
+    var matcher = new Inspec.matchers.ComparisonMatcher(expected, 
+        this.subject, {negative : this.negative, operator : ">="});
     this.judge(matcher);
   },
 
-  // apply to object  
-  toBeIdenticalTo : function(expected){
-    var matcher = new Inspec.matchers.IdentityMatcher(expected, this.subject, this.negative);
-    this.judge(matcher);    
+  toBeAtMost : function(expected){
+    var matcher = new Inspec.matchers.ComparisonMatcher(expected, 
+        this.subject, {negative : this.negative, operator : "<="});
+    this.judge(matcher);
   },
-
-  // apply to function  
-  toFail : function(){
-  },
-
-  // apply to string, array
-  toBeEmpty : function(){
+  
+  // apply to object
+  toBeNull : function(){
+    this.toBeIdenticalTo(null);
   },
   
   // apply to object
   toBeUndefined : function(){
     this.toBe(anUndefinedValue);
   },
-  
-  // apply to object
-  toBeNull : function(){
-    this.toBeIdenticalTo(null);
+    
+  // apply to string, array
+  toBeEmpty : function(){
   },
   
   // apply to object
@@ -59,14 +66,50 @@ Inspec.Expectation = Inspec.Class.extend({
     this.toBeIdenticalTo(false);
   },
   
+  toBeType : function(expected){
+  },
+  
+  toBeGreaterThan : function(expected){
+    var matcher = new Inspec.matchers.ComparisonMatcher(expected, 
+        this.subject, {negative : this.negative, operator : ">"});
+    this.judge(matcher);
+  },
+
+  toBeLessThan : function(expected){
+    var matcher = new Inspec.matchers.ComparisonMatcher(expected, 
+        this.subject, {negative : this.negative, operator : "<"});
+    this.judge(matcher);
+  },
+  
+  toBeWithIn : function(least, most){
+  },
+  
+  toHaveLength : function(expected){
+  },
+  
+  toInclude : function(expected){
+  },
+  
   // apply to string
   toMatch : function(pattern){
     
+  },  
+  
+  toRespondTo : function(fnName){
+  },
+  
+  toEql : function(expected){
+    var matcher = new Inspec.matchers.EqualityMatcher(expected, this.subject, {negative : this.negative});
+    this.judge(matcher);
   },
   
   // apply to object
-  toInclude : function(property){
-  
+  toBe : function(expected){
+
+  },
+
+  // apply to function  
+  toThrowError : function(){
   },
   
   // apply to string, array
@@ -85,3 +128,6 @@ Inspec.Expectation = Inspec.Class.extend({
   toHaveAtMost : function(occurance, property){
   }
 });
+
+Inspec.Expectation.prototype.toBeAn = Inspec.Expectation.prototype.toBeA;
+Inspec.Expectation.prototype.toBe = Inspec.Expectation.prototype.toEql;

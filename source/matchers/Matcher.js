@@ -1,8 +1,8 @@
 Inspec.matchers.Matcher = Inspec.Class.extend({
-  init : function(expected, actual, negative){
+  init : function(expected, actual, options){
     this.expected = expected;
     this.actual = actual;
-    this.negative = negative;
+    this.negative = options.negative;
     this.result = null;
   },
 

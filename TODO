@@ -21,6 +21,8 @@
                      meaning that [1, 2, [3]].should_eql([1, 2, [3]]) will be true.
 
 * Implement sandboxed scopes in test execution
+* Write README
+* write Documentations
 * Better error messages
 * Add Parsers to parse loaded specs before eval (support for better syntax)
 * Implement a better HtmlReporter
