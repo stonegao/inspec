@@ -1,7 +1,6 @@
 Inspec.Reporter = Inspec.Class.extend({
   init : function(messenger){
     this.messenger = messenger;
-    console.log("bla");
     this.subscribeMessages();
   },
 

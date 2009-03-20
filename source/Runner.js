@@ -29,10 +29,11 @@ Inspec.Runner = Inspec.Class.extend({
       var scope = {};
       try{
         this.executeBeforeAll(exampleGroup);
-        this.executeExamples(exampleGroup);
       }catch(e){
         executionError = executionError || e;
       }
+      
+      this.executeExamples(exampleGroup);
       
       try{
         this.executeAfterAll(exampleGroup);

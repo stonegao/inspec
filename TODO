@@ -27,4 +27,4 @@
                      meaning that [1, 2, [3]].should_eql([1, 2, [3]]) will be true.
                      
 * Better error messages
-
+* Add default options

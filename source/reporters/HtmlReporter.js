@@ -1,6 +1,11 @@
 Inspec.HtmlReporter = Inspec.Reporter.extend({
   onStartTest : function(message){
-    console.log("Start Test");
+    this.document = Inspec.root.document;
+    var body = this.document.getElementsByTagName('body')[0];
+    var viewport = this.document.createElement('div');
+    viewport.id = "inspec";
+    body.appendChild(viewport);
+    this.viewport = viewport;
   },
   
   onEndTest : function(message){
@@ -14,22 +19,35 @@ Inspec.HtmlReporter = Inspec.Reporter.extend({
   },
   
   onStartExample : function(message){
-     console.log(this.getDescription(message.example));
   },
   
   onEndExample : function(message){
     var example = message.example;
     var success = message.success;
     var error = message.error;
-    if(success)
-      console.log("success");
+    var description = this.getDescription(message.example);
+    
+    var result = this.document.createElement('div');
+    var title = this.document.createElement('div');
+    title.setAttribute("class", "title");
+    title.innerHTML = description;
+    result.appendChild(title);
+
+    if(success){
+      result.setAttribute("class", "success");
+    }
     else{
       if(error instanceof Inspec.ExpectationFailure){
-        console.log("Failure : " + error);
+        result.setAttribute("class", "failure");
       } else if(error instanceof Error){
-        console.log("Error : " + error);
+        result.setAttribute("class", "error");
       }
+      var explanation = this.document.createElement('div');
+      explanation.setAttribute("class", "explanation");
+      explanation.innerHTML = error.toString();
+      result.appendChild(explanation);
     }
+    this.viewport.appendChild(result);
   },
   
   getExampleGroupDescription : function(exampleGroup){
