@@ -44,7 +44,7 @@ Inspec.Expectation = Inspec.Class.extend({
   
   // apply to object
   toBeNull : function(){
-    this.toBeIdenticalTo(null);
+    this.toEqual(null);
   },
   
   // apply to object
@@ -58,12 +58,12 @@ Inspec.Expectation = Inspec.Class.extend({
   
   // apply to object
   toBeTrue : function(){
-    this.toBeIdenticalTo(true);
+    this.toEqual(true);
   },
   
   // apply to object
   toBeFalse : function(){
-    this.toBeIdenticalTo(false);
+    this.toEqual(false);
   },
   
   toBeType : function(expected){
