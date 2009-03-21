@@ -14,6 +14,10 @@ Inspec.matchers.Matcher = Inspec.Class.extend({
     throw new Inspec.NotImplemented();
   },
   
+  xor : function(l, r) {
+    return (l || r) && !(l && r);
+  },
+  
   toString : function(){
     return this.explain();
   }

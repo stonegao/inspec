@@ -67,6 +67,9 @@ Inspec.Expectation = Inspec.Class.extend({
   },
   
   toBeType : function(expected){
+    var matcher = new Inspec.matchers.TypeMatcher(expected, 
+        this.subject, {negative : this.negative});
+    this.judge(matcher);  
   },
   
   toBeGreaterThan : function(expected){
@@ -82,12 +85,20 @@ Inspec.Expectation = Inspec.Class.extend({
   },
   
   toBeWithIn : function(least, most){
+    var expected = new Inspec.util.Range(least, most);
+    var matcher = new Inspec.matchers.RangeMatcher(expected, 
+        this.subject, {negative : this.negative});
+    this.judge(matcher);
   },
   
   toHaveLength : function(expected){
+    var matcher = new Inspec.matchers.IdentityMatcher(expected, 
+      this.subject.length, {negative : this.negative});
+    this.judge(matcher);  
   },
   
   toInclude : function(expected){
+    
   },
   
   // apply to string

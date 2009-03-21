@@ -17,7 +17,14 @@
   <script type="text/javascript" src="../source/Exceptions.js"></script>
   <script type="text/javascript" src="../source/Expectation.js"></script>
   <script type="text/javascript" src="../source/matchers/Matcher.js"></script>
+  <script type="text/javascript" src="../source/matchers/ComparisonMatcher.js"></script>
+  <script type="text/javascript" src="../source/matchers/EqualityMatcher.js"></script>
   <script type="text/javascript" src="../source/matchers/IdentityMatcher.js"></script>
+  <script type="text/javascript" src="../source/matchers/InclusionMatcher.js"></script>
+  <script type="text/javascript" src="../source/matchers/InstanceMatcher.js"></script>
+  <script type="text/javascript" src="../source/matchers/RangeMatcher.js"></script>
+  <script type="text/javascript" src="../source/matchers/RegexMatcher.js"></script>
+  <script type="text/javascript" src="../source/matchers/TypeMatcher.js"></script>
   <script type="text/javascript" src="../source/environments/Environment.js"></script>
   <script type="text/javascript" src="../source/environments/BrowserEnvironment.js"></script>
   <script type="text/javascript" src="../source/temp.js"></script>
@@ -26,7 +33,7 @@
 <body>
   <script type="text/javascript">
     Inspec
-      .load('example.js')
+      .load('example.js', 'matchersSpec.js')
       .run();
   </script>
 </body>

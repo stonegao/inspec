@@ -22,7 +22,6 @@ describe("Inspec", function(){
   })
   
   itShouldBehaveLike("a shared example group");
-    
 })
 
 sharedExamplesFor("a shared example group", function(){
