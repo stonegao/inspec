@@ -1,0 +1,64 @@
+**Inspec** is a **Javascript BDD** Test Library that aims to be **flexible** and **powerful** yet **clean** and **easy to extend**. The source is currently working, but is still considered to be in experimental stage. 
+
+h2. Eample
+
+<pre><code>
+describe("Inspec", function(){
+
+  it("should work", function(){
+    expect(true).toBeTrue();
+  })
+  
+  it("should fail", function(){
+    expect(true).not().toBeTrue();
+  })
+
+  it("should be pending")
+
+  describe("with a nested example group", function(){    
+    it("should work as a nested example group", function(){
+      expect(false).toBe(false);
+    })
+  })
+  
+  // W00t?? It's nesting a shared example group
+  itShouldBehaveLike("a shared example group");
+})
+
+sharedExamplesFor("a shared example group", function(){
+  it("should work as shared example", function(){
+    expect(true).toBeTrue();
+  })
+
+  // Yes! Shared nested Example Groups!
+  describe("with nested example groups in shared", function(){
+    it("should work as a nested example group in shared", function(){
+      expect(true).toBeTrue();
+    })
+  })
+})
+</code></pre>
+
+h2. What's Working
+
+* Basic Matchers
+* Nested Example Groups
+* Shared Example Groups ( A.K.A. it_should_behave_like in RSpec )
+* Sandbox Example Scope
+* Basic HTML Reporter
+
+h2. What needs to be done
+
+* Better syntax and organization of matchers for easier extensions.
+* Work on Rhino and WScript environment.
+* Make sure compatibility with all major browsers
+* Allow selective execution of Example groups / Examples
+* Make a better HTML Reporter, that hooks into selective executions
+* Better Documentations
+* Better Error messages on Failure and Exception
+
+h2. What I'm considering to do
+
+* Add Parsers to parse loaded specs before eval (support for better syntax, aka jSpec)
+
+I'm not too sure if I should do that. Making the specs look cleaner, but turning JavaScript tests into some kind of Frankenstein Script...
